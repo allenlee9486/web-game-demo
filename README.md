@@ -1,6 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Game Portal
 
-## Getting Started
+This is a static game portal built with Next.js 15, Tailwind CSS, and Markdown.
+It is designed to be easily managed by adding/editing Markdown files.
+
+## 🚀 Features
+
+- **Multi-language Support (i18n)**: Supports English and Chinese (Simplified).
+- **Admin Dashboard**: Web-based interface to manage games and blog posts.
+- **Static Site Generation (SSG)**: Blazing fast performance and SEO friendly.
+- **Markdown Driven**: Manage games and blog posts using simple `.md` files.
+- **No Database**: Zero maintenance database-free architecture.
+- **Responsive Design**: Looks great on mobile and desktop.
+- **Dark Mode**: System-aware dark mode support.
+
+## 🌍 Multi-language
+
+The site supports `en` (English) and `zh` (Chinese).
+- Content files can have a locale suffix, e.g., `game-1.zh.md`.
+- If a locale-specific file is missing, it falls back to the default (`.md`).
+
+## 🛡️ Admin Dashboard
+
+Access the admin dashboard at `/admin`.
+- **Default Password**: `admin123`
+- **Features**: List, Add, Delete games and blog posts.
+
+## 🛠️ How to Manage Content
+
+### Adding a New Game
+
+1. Create a new `.md` file in the `content/games/` directory.
+2. Use the following Frontmatter template:
+
+```yaml
+---
+title: "My New Game"
+description: "A short description of the game."
+category: "Action"
+image: "/images/games/thumbnail.jpg"
+gameUrl: "https://example.com/game-iframe-url"
+date: "2023-10-27"
+featured: true
+---
+
+## Game Description
+
+Write your game description here using Markdown.
+```
+
+3. Place the thumbnail image in `public/images/games/`.
+
+### Adding a Blog Post
+
+1. Create a new `.md` file in the `content/blog/` directory.
+2. Use the following Frontmatter template:
+
+```yaml
+---
+title: "My New Post"
+date: "2023-10-27"
+excerpt: "A short summary of the post."
+coverImage: "/images/blog/cover.jpg"
+author: "Admin"
+---
+
+## Post Content
+
+Write your blog post here.
+```
+
+3. Place the cover image in `public/images/blog/`.
+
+## 💻 Development
 
 First, run the development server:
 
@@ -16,21 +87,22 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🏗️ Building for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+This will generate static HTML files in the `out` directory (if configured for export) or optimize the `.next` build for production.
 
-To learn more about Next.js, take a look at the following resources:
+## 📁 Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/[lang]/`: Next.js App Router pages (Localized).
+- `app/admin/`: Admin Dashboard.
+- `app/api/`: API Routes for Admin.
+- `content/`: Markdown files for Games and Blog.
+- `public/`: Static assets (images, icons).
+- `src/components/`: React components.
+- `src/lib/`: Utility functions and API logic.
+- `src/types/`: TypeScript definitions.
+- `src/dictionaries/`: Localization strings.

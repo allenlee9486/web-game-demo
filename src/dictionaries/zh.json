@@ -1,0 +1,47 @@
+{
+  "common": {
+    "home": "首页",
+    "games": "游戏库",
+    "blog": "博客",
+    "about": "关于我们",
+    "privacy": "隐私政策",
+    "rights_reserved": "版权所有。",
+    "back_to_blog": "返回博客",
+    "back_to_home": "返回首页",
+    "read_more": "阅读更多"
+  },
+  "home": {
+    "hero_title": "在线畅玩精选网页游戏",
+    "hero_subtitle": "探索精心挑选的塔防、策略和动作游戏。无需下载 - 点击即玩！",
+    "new_games": "每周新增游戏",
+    "browse_games": "浏览游戏",
+    "read_blog": "阅读博客",
+    "featured_games": "精选游戏",
+    "featured_subtitle": "编辑本周推荐。",
+    "view_all_games": "查看所有游戏",
+    "latest_updates": "最新动态",
+    "updates_subtitle": "新闻、攻略和更新日志。",
+    "view_all_posts": "查看所有文章",
+    "no_featured": "暂无精选游戏。",
+    "no_posts": "暂无博客文章。",
+    "instant_play": "即点即玩",
+    "instant_play_desc": "无需下载或安装。所有游戏均可在现代浏览器中直接运行。",
+    "curated_selection": "精选内容",
+    "curated_selection_desc": "我们严格验证每款游戏的质量。只有最优秀的塔防和策略游戏才能入选。",
+    "always_free": "永久免费",
+    "always_free_desc": "免费畅玩我们的所有游戏。无隐藏费用或付费墙。"
+  },
+  "games": {
+    "all_games": "所有游戏",
+    "browse_collection": "浏览我们要收藏的 {count} 款游戏。",
+    "category_all": "全部",
+    "instructions": "操作说明",
+    "instructions_desc": "点击游戏窗口以获取焦点。使用鼠标和键盘控制游戏。大多数游戏支持全屏模式以获得更好的体验。",
+    "fullscreen": "全屏",
+    "ad_space": "广告位"
+  },
+  "blog": {
+    "title": "博客",
+    "subtitle": "来自开发团队的新闻、更新和故事。"
+  }
+}
