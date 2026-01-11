@@ -1,0 +1,47 @@
+{
+  "common": {
+    "home": "Home",
+    "games": "Games",
+    "blog": "Blog",
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "rights_reserved": "All rights reserved.",
+    "back_to_blog": "Back to Blog",
+    "back_to_home": "Back to Home",
+    "read_more": "Read More"
+  },
+  "home": {
+    "hero_title": "Play the Best Web Games Online",
+    "hero_subtitle": "Discover a curated collection of addictive tower defense, strategy, and action games. No downloads required - just click and play!",
+    "new_games": "New Games Added Weekly",
+    "browse_games": "Browse Games",
+    "read_blog": "Read Blog",
+    "featured_games": "Featured Games",
+    "featured_subtitle": "Our editors' top picks for this week.",
+    "view_all_games": "View all games",
+    "latest_updates": "Latest Updates",
+    "updates_subtitle": "News, guides, and patch notes.",
+    "view_all_posts": "View all posts",
+    "no_featured": "No featured games found.",
+    "no_posts": "No blog posts found.",
+    "instant_play": "Instant Play",
+    "instant_play_desc": "No downloads or installations. All games run directly in your modern web browser.",
+    "curated_selection": "Curated Selection",
+    "curated_selection_desc": "We verify every game for quality. Only the best tower defense and strategy games make the cut.",
+    "always_free": "Always Free",
+    "always_free_desc": "Enjoy our entire catalog of games completely free. No hidden fees or paywalls."
+  },
+  "games": {
+    "all_games": "All Games",
+    "browse_collection": "Browse our complete collection of {count} games.",
+    "category_all": "All",
+    "instructions": "Instructions",
+    "instructions_desc": "Click inside the game window to focus. Use your mouse and keyboard to control the game. Most games support fullscreen mode for a better experience.",
+    "fullscreen": "Fullscreen",
+    "ad_space": "Advertisement Space"
+  },
+  "blog": {
+    "title": "Our Blog",
+    "subtitle": "News, updates, and stories from the developers."
+  }
+}

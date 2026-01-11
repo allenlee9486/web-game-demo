@@ -2,6 +2,7 @@ import { getDictionary } from '@/dictionaries/get-dictionary';
 import { Locale, i18n } from '@/i18n-config';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import { getSiteSettings } from '@/lib/settings';
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { Metadata } from "next";
@@ -30,18 +31,20 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }) {
-  const { lang } = await params;
+  const { lang: langParam } = await params;
+  const lang = langParam as Locale;
   const dictionary = await getDictionary(lang);
+  const settings = getSiteSettings();
 
   return (
     <html lang={lang}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="flex flex-col min-h-screen">
-          <Navbar lang={lang} dictionary={dictionary} />
+          <Navbar lang={lang} dictionary={dictionary} settings={settings} />
           <main className="flex-grow">{children}</main>
-          <Footer lang={lang} dictionary={dictionary} />
+          <Footer lang={lang} dictionary={dictionary} settings={settings} />
         </div>
       </body>
     </html>

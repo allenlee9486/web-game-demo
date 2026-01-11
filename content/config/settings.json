@@ -1,0 +1,21 @@
+{
+  "featuredGameSlug": "pokpath-td",
+  "logo": "",
+  "navItems": [
+    {
+      "id": "1",
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "id": "2",
+      "label": "Games",
+      "href": "/games"
+    },
+    {
+      "id": "3",
+      "label": "Blog",
+      "href": "/blog"
+    }
+  ]
+}

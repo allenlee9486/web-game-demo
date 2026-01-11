@@ -1,10 +1,16 @@
-import Link from "next/link";
-import { getFeaturedGames, getAllPosts } from "@/lib/api";
-import { GameCard } from "@/components/GameCard";
-import { BlogCard } from "@/components/BlogCard";
-import { ArrowRight, Gamepad2, Zap, ShieldCheck, Smile } from "lucide-react";
+import { getGameBySlug, getAllGames } from "@/lib/api";
 import { Locale } from "@/i18n-config";
 import { getDictionary } from "@/dictionaries/get-dictionary";
+import { Game } from "@/types";
+import { GamePlayer } from "@/components/home/GamePlayer";
+import { GameFeatures } from "@/components/home/GameFeatures";
+import { GameComments } from "@/components/home/GameComments";
+import { GameListSidebar } from "@/components/home/GameListSidebar";
+import { GameListBottom } from "@/components/home/GameListBottom";
+import { GameCategories } from "@/components/home/GameCategories";
+import { GameTabs } from "@/components/home/GameTabs";
+import fs from 'fs';
+import path from 'path';
 
 export default async function Home({
   params,
@@ -13,142 +19,107 @@ export default async function Home({
 }) {
   const { lang } = await params;
   const dictionary = await getDictionary(lang);
-  const featuredGames = getFeaturedGames(lang);
-  const recentPosts = getAllPosts(lang).slice(0, 3);
+  
+  // Fetch all games for lists
+  const allGames = getAllGames(lang);
+
+  // Determine featured game slug from settings
+  let featuredSlug = 'pokepath-td'; // default
+  try {
+    const configPath = path.join(process.cwd(), 'content/config/settings.json');
+    if (fs.existsSync(configPath)) {
+      const settings = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      if (settings.featuredGameSlug) {
+        featuredSlug = settings.featuredGameSlug;
+      }
+    }
+  } catch (e) {
+    console.warn("Failed to read settings.json", e);
+  }
+
+  // Fetch main featured game
+  let mainGame: Game | undefined;
+  try {
+    mainGame = getGameBySlug(featuredSlug, lang);
+  } catch {
+    console.warn(`Main game '${featuredSlug}' not found, falling back to first featured game.`);
+    if (allGames.length > 0) {
+      mainGame = allGames[0];
+    }
+  }
+
+  // Fallback view if no game at all
+  if (!mainGame) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center bg-white dark:bg-gray-950">
+         <div className="text-center">
+           <h1 className="text-2xl font-bold mb-4">Welcome to Game Portal</h1>
+           <p className="text-gray-500">No games found. Please add games in Admin panel.</p>
+         </div>
+      </div>
+    );
+  }
+
+  // Prepare lists (exclude main game if possible to avoid dupes, or just show all)
+  const otherGames = allGames.filter(g => g.slug !== mainGame?.slug);
+  const sidebarGames = otherGames.slice(0, 6); // 2 cols * 3 rows = 6 games
+  const bottomGames = otherGames.slice(6, 11); // 5 games
 
   return (
-    <div className="flex flex-col bg-white dark:bg-gray-950">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b bg-gray-50 py-20 dark:bg-gray-900 dark:border-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-4 inline-flex items-center rounded-full border bg-white px-3 py-1 text-sm font-medium shadow-sm dark:bg-gray-800 dark:border-gray-700">
-              <span className="flex h-2 w-2 rounded-full bg-blue-500 mr-2"></span>
-              {dictionary.home.new_games}
-            </div>
-            <h1 className="mb-6 text-4xl font-extrabold tracking-tight sm:text-6xl text-gray-900 dark:text-white">
-              {dictionary.home.hero_title}
-            </h1>
-            <p className="mb-8 text-lg text-gray-600 dark:text-gray-300">
-              {dictionary.home.hero_subtitle}
-            </p>
-            <div className="flex justify-center gap-4">
-              <Link
-                href={`/${lang}/games`}
-                className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-lg transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              >
-                <Gamepad2 className="mr-2 h-5 w-5" />
-                {dictionary.home.browse_games}
-              </Link>
-              <Link
-                href={`/${lang}/blog`}
-                className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-              >
-                {dictionary.home.read_blog}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="flex flex-col bg-white dark:bg-gray-950 min-h-screen">
+      {/* 1. Header is in Layout */}
 
-      {/* Featured Games */}
-      <section className="py-16">
+      {/* 2. Game Area (Player + Sidebar + Bottom) */}
+      <div className="bg-gray-900 py-8">
         <div className="container mx-auto px-4">
-          <div className="mb-10 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-                {dictionary.home.featured_games}
-              </h2>
-              <p className="mt-2 text-gray-600 dark:text-gray-400">
-                {dictionary.home.featured_subtitle}
-              </p>
-            </div>
-            <Link href={`/${lang}/games`} className="group flex items-center font-medium text-blue-600 hover:text-blue-500">
-              {dictionary.home.view_all_games}
-              <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
           
-          {featuredGames.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {featuredGames.map((game) => (
-                <GameCard key={game.slug} game={game} lang={lang} />
-              ))}
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Left: Main Game Player */}
+            <div className="w-full lg:w-3/4">
+               <GamePlayer game={mainGame} locale={lang} dictionary={dictionary} />
             </div>
-          ) : (
-            <div className="rounded-xl border border-dashed p-10 text-center text-gray-500">
-              <p>{dictionary.home.no_featured}</p>
-            </div>
-          )}
-        </div>
-      </section>
 
-      {/* Why Choose Us */}
-      <section className="bg-gray-50 py-16 dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
-              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
-                <Zap className="h-6 w-6" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold">{dictionary.home.instant_play}</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {dictionary.home.instant_play_desc}
-              </p>
-            </div>
-            <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
-              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300">
-                <ShieldCheck className="h-6 w-6" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold">{dictionary.home.curated_selection}</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {dictionary.home.curated_selection_desc}
-              </p>
-            </div>
-            <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
-              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300">
-                <Smile className="h-6 w-6" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold">{dictionary.home.always_free}</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {dictionary.home.always_free_desc}
-              </p>
+            {/* Right: Sidebar Games (2 cols) */}
+            <div className="w-full lg:w-1/4">
+               <GameListSidebar 
+                  games={sidebarGames} 
+                  locale={lang} 
+                  title="Popular Games" 
+               />
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Latest Blog Posts */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-10 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-                {dictionary.home.latest_updates}
-              </h2>
-              <p className="mt-2 text-gray-600 dark:text-gray-400">
-                {dictionary.home.updates_subtitle}
-              </p>
-            </div>
-            <Link href={`/${lang}/blog`} className="group flex items-center font-medium text-blue-600 hover:text-blue-500">
-              {dictionary.home.view_all_posts}
-              <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+          {/* Bottom: New Games (5 cols) */}
+          <div className="mt-8">
+             <GameListBottom 
+                games={bottomGames.length > 0 ? bottomGames : sidebarGames.slice(0, 5)} 
+                locale={lang} 
+                title="New Games" 
+             />
           </div>
-          
-          {recentPosts.length > 0 ? (
-            <div className="grid gap-8 md:grid-cols-3">
-              {recentPosts.map((post) => (
-                <BlogCard key={post.slug} post={post} lang={lang} />
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-xl border border-dashed p-10 text-center text-gray-500">
-              <p>{dictionary.home.no_posts}</p>
-            </div>
-          )}
+
         </div>
-      </section>
+      </div>
+
+      {/* 3. Features (Optional: Keep or Remove? User didn't explicitly say remove, but replaced with new layout below. I'll keep it as a separator for now or remove if it conflicts. I'll remove it to be cleaner as per design) */}
+      
+      {/* 4. Game Details & Comments Area (New Layout) */}
+      <div className="container mx-auto px-4 py-8">
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column (2/3 width) */}
+            <div className="lg:col-span-2 space-y-8">
+               <GameCategories game={mainGame} locale={lang} />
+               <GameTabs game={mainGame} />
+            </div>
+
+            {/* Right Column (1/3 width) */}
+            <div className="lg:col-span-1">
+               <GameComments slug={mainGame.slug} />
+            </div>
+         </div>
+      </div>
+
+      {/* 5. Footer is in Layout */}
     </div>
   );
 }

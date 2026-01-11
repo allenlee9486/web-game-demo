@@ -1,0 +1,12 @@
+[
+  {
+    "id": "simulation",
+    "name": "Simulation",
+    "slug": "simulation"
+  },
+  {
+    "id": "tower-defense",
+    "name": "Tower Defense",
+    "slug": "tower-defense"
+  }
+]

@@ -1,12 +1,12 @@
-import { getPostBySlug, getPostSlugs } from "@/lib/api";
+import { getPostBySlug, getPostSlugs, getRelatedPosts } from "@/lib/api";
 import { MarkdownContent } from "@/components/MarkdownContent";
+import { BlogCard } from "@/components/BlogCard";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, User } from "lucide-react";
+import { Calendar, User, Clock } from "lucide-react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { Locale } from "@/i18n-config";
-import { getDictionary } from "@/dictionaries/get-dictionary";
+import { getLocalizedPath } from "@/lib/i18n-utils";
 
 interface Props {
   params: Promise<{ slug: string; lang: Locale }>;
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: post.title,
       description: post.excerpt,
     };
-  } catch (e) {
+  } catch {
     return {
       title: "Post Not Found",
     };
@@ -36,55 +36,88 @@ export async function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug, lang } = await params;
-  const dictionary = await getDictionary(lang);
   let post;
   
   try {
     post = getPostBySlug(slug, lang);
-  } catch (e) {
+  } catch {
     notFound();
   }
 
+  // Fetch related posts (3 most recent excluding current)
+  const relatedPosts = getRelatedPosts(slug, lang, 3);
+  
+  // Calculate read time
+  const words = post.content ? post.content.split(/\s+/).length : 0;
+  const readTime = Math.max(1, Math.ceil(words / 200));
+
   return (
-    <div className="flex flex-col bg-white dark:bg-gray-950">
+    <div className="flex flex-col bg-white dark:bg-gray-950 min-h-screen">
       <main className="flex-1 py-12">
         <article className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl">
-            <Link 
-              href={`/${lang}/blog`}
-              className="mb-8 inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              {dictionary.common.back_to_blog}
-            </Link>
+          <div className="mx-auto max-w-4xl">
+            {/* Breadcrumbs */}
+             <nav className="mb-8 flex items-center text-sm text-gray-500 flex-wrap gap-2">
+              <Link href={getLocalizedPath('/', lang)} className="hover:text-blue-600 transition-colors">Home</Link>
+              <span className="text-gray-300">/</span>
+              <Link href={getLocalizedPath('/blog', lang)} className="hover:text-blue-600 transition-colors">Blog</Link>
+              <span className="text-gray-300">/</span>
+              <span className="text-gray-900 dark:text-gray-100 truncate max-w-[200px] md:max-w-md font-medium">{post.title}</span>
+            </nav>
 
             <header className="mb-10 text-center">
-              <div className="mb-6 flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                <div className="flex items-center gap-1">
+              <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl md:text-5xl mb-6 leading-tight">
+                {post.title}
+              </h1>
+
+              <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
                   <time dateTime={post.date}>{post.date}</time>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1.5">
                   <User className="h-4 w-4" />
-                  <span>{post.author}</span>
+                  <span>{post.author || 'Admin'}</span>
+                </div>
+                 <div className="flex items-center gap-1.5">
+                  <Clock className="h-4 w-4" />
+                  <span>{readTime} min read</span>
                 </div>
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-                {post.title}
-              </h1>
             </header>
             
             {post.coverImage && (
-              <div className="mb-10 overflow-hidden rounded-xl shadow-lg">
-                 {/* Placeholder for image component */}
-                 <div className="aspect-[2/1] w-full bg-cover bg-center bg-gray-100" 
+              <div className="mb-12 overflow-hidden rounded-2xl shadow-xl ring-1 ring-gray-900/5 dark:ring-white/10">
+                 <div className="aspect-[21/9] w-full bg-cover bg-center bg-gray-100 dark:bg-gray-800" 
                       style={{ backgroundImage: `url(${post.coverImage})` }} />
               </div>
             )}
             
-            <div className="rounded-xl border bg-white p-8 shadow-sm dark:bg-gray-900 dark:border-gray-800">
+            <div className="prose prose-lg dark:prose-invert mx-auto mb-16 prose-img:rounded-xl prose-headings:scroll-mt-20">
               <MarkdownContent content={post.content} />
             </div>
+
+            {/* Related Articles */}
+            {relatedPosts.length > 0 && (
+              <div className="border-t border-gray-200 dark:border-gray-800 pt-16 mt-16">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Related Articles</h2>
+                  <Link href={`/${lang}/blog`} className="text-blue-600 hover:text-blue-700 font-medium text-sm hidden sm:block">
+                    View All Posts &rarr;
+                  </Link>
+                </div>
+                <div className="grid gap-6 md:grid-cols-3">
+                  {relatedPosts.map(post => (
+                    <BlogCard key={post.slug} post={post} lang={lang} variant="vertical" />
+                  ))}
+                </div>
+                <div className="mt-8 text-center sm:hidden">
+                  <Link href={`/${lang}/blog`} className="text-blue-600 hover:text-blue-700 font-medium text-sm">
+                    View All Posts &rarr;
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </article>
       </main>

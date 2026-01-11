@@ -17,6 +17,23 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const { searchParams } = new URL(req.url);
+  const filename = searchParams.get('filename');
+
+  if (filename) {
+    const fullPath = path.join(gamesDirectory, filename);
+    if (!fs.existsSync(fullPath)) {
+      return NextResponse.json({ error: 'File not found' }, { status: 404 });
+    }
+    const content = fs.readFileSync(fullPath, 'utf8');
+    const { data, content: markdownContent } = matter(content);
+    return NextResponse.json({
+      filename,
+      ...data,
+      content: markdownContent
+    });
+  }
+
   const files = fs.readdirSync(gamesDirectory);
   const games = files.map(file => {
     const content = fs.readFileSync(path.join(gamesDirectory, file), 'utf8');
@@ -47,7 +64,7 @@ export async function POST(req: Request) {
     fs.writeFileSync(fullPath, fileContent);
 
     return NextResponse.json({ success: true });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: 'Failed to save file' }, { status: 500 });
   }
 }
@@ -71,7 +88,7 @@ export async function DELETE(req: Request) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: 'Failed to delete file' }, { status: 500 });
   }
 }

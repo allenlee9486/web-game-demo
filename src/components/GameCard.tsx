@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Game } from "@/types";
 import { Play, Gamepad2 } from "lucide-react";
 import { Locale } from "@/i18n-config";
+import { getLocalizedPath } from "@/lib/i18n-utils";
 
 interface GameCardProps {
   game: Game;
@@ -10,7 +11,7 @@ interface GameCardProps {
 
 export function GameCard({ game, lang }: GameCardProps) {
   return (
-    <Link href={`/${lang}/games/${game.slug}`} className="group block h-full">
+    <Link href={getLocalizedPath(`/games/${game.slug}`, lang)} className="group block h-full">
       <div className="h-full overflow-hidden rounded-xl border bg-white shadow-sm transition-all hover:shadow-md dark:bg-gray-900 dark:border-gray-800">
         <div className="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
           {/* Placeholder for when image is missing or loading */}
