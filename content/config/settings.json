@@ -16,6 +16,11 @@
       "id": "3",
       "label": "Blog",
       "href": "/blog"
+    },
+    {
+      "id": "1768147739230",
+      "label": "PokéPath Games",
+      "href": "http://localhost:3000/games?filter=category&category=Tower+Defense"
     }
   ]
 }
