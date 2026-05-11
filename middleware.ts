@@ -65,6 +65,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Matcher ignoring `/_next/`, `/api/`, `/admin`, and static SEO files
-  matcher: ["/((?!api|admin|_next/static|_next/image|favicon.ico|images|sitemap.xml|robots.txt).*)"],
-};
+    // Matcher ignoring `/_next/`, `/api/`, `/admin`, and static SEO files
+    matcher: ["/((?!api|admin|_next/static|_next/image|favicon.ico|images|sitemap.xml|robots.txt|ads.txt).*)"],
+  };
