@@ -30,6 +30,11 @@ function getLocale(request: NextRequest): string | undefined {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  // Handle sitemap.xml and robots.txt specifically to ensure they are served from root
+  if (pathname === '/sitemap.xml' || pathname === '/robots.txt' || pathname === '/ads.txt') {
+    return NextResponse.next();
+  }
+
   // Check if there is any supported locale in the pathname
   const pathnameHasLocale = i18n.locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
@@ -66,5 +71,5 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     // Matcher ignoring `/_next/`, `/api/`, `/admin`, and static SEO files
-    matcher: ["/((?!api|admin|_next/static|_next/image|favicon.ico|images|sitemap.xml|robots.txt|ads.txt).*)"],
+    matcher: ["/((?!api|admin|_next/static|_next/image|favicon.ico|images|sitemap\\.xml|robots\\.txt|ads\\.txt).*)"],
   };
