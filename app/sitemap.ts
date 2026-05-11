@@ -46,3 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return sitemapEntries;
 }
+
+// Next.js generates the sitemap at /sitemap.xml by default.
+// If you want to support /zh/sitemap.xml etc., you need to use a dynamic route or rewrite.
+// However, the standard approach is a single sitemap.xml at the root that lists all localized URLs.
