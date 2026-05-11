@@ -7,6 +7,8 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/admin/',
     },
-    sitemap: 'https://klifur.online/sitemap.xml',
+    sitemap: [
+      'https://klifur.online/sitemap.xml',
+    ],
   };
 }
