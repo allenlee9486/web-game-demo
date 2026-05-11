@@ -79,7 +79,7 @@ export default async function Home({ params }: Props) {
   const bottomGames = otherGames.slice(0, 5);
 
   return (
-    <div className="flex flex-col bg-white dark:bg-gray-950 min-h-screen">
+    <div className="flex flex-col bg-white min-h-screen">
       <GameVisitRecorder slug={mainGame.slug} />
       
       {/* 1. Hero / Main Section */}

@@ -104,7 +104,7 @@ export default async function GamePage({ params }: Props) {
   };
 
   return (
-    <div className="flex flex-col bg-white dark:bg-gray-950 min-h-screen">
+    <div className="flex flex-col bg-white min-h-screen">
       <Script
         id="game-jsonld"
         type="application/ld+json"

@@ -21,7 +21,7 @@ export default async function BlogPage({
   const allPosts = getAllPosts(lang);
 
   return (
-    <div className="flex flex-col bg-white dark:bg-gray-950">
+    <div className="flex flex-col bg-white">
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl">
@@ -29,13 +29,13 @@ export default async function BlogPage({
             <nav className="mb-8 flex items-center text-sm text-gray-500">
               <Link href={getLocalizedPath('/', lang)} className="hover:text-blue-600 transition-colors">Home</Link>
               <span className="mx-2 text-gray-300">/</span>
-              <span className="text-gray-900 dark:text-gray-100 font-medium">Blog</span>
+              <span className="text-gray-900 font-medium">Blog</span>
             </nav>
 
             <div className="mb-12 text-center">
 
               <h1 className="text-4xl font-bold mb-4">{dictionary.blog.title}</h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400">
+              <p className="text-xl text-gray-600">
                 {dictionary.blog.subtitle}
               </p>
             </div>

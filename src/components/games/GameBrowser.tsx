@@ -143,9 +143,9 @@ export function GameBrowser({ initialGames, categories, lang, dictionary }: Game
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar - Desktop */}
-      <aside className="hidden lg:block w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex-shrink-0">
+      <aside className="hidden lg:block w-64 bg-white border-r border-gray-200 flex-shrink-0">
         <div className="p-6 sticky top-0 h-screen overflow-y-auto space-y-8">
           {/* Search */}
           <div className="relative">
@@ -155,7 +155,7 @@ export function GameBrowser({ initialGames, categories, lang, dictionary }: Game
               placeholder="Search games..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-100 dark:bg-gray-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+              className="w-full pl-10 pr-4 py-2.5 bg-gray-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
             />
           </div>
 
@@ -163,28 +163,28 @@ export function GameBrowser({ initialGames, categories, lang, dictionary }: Game
           <nav className="space-y-1">
             <button 
               onClick={() => handleFilterChange('all')}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium transition-colors ${filter === 'all' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium transition-colors ${filter === 'all' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
             >
               <LayoutGrid className="h-5 w-5" />
               <span>{dictionary.games.all_games}</span>
             </button>
             <button 
               onClick={() => handleFilterChange('popular')}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium transition-colors ${filter === 'popular' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium transition-colors ${filter === 'popular' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
             >
               <TrendingUp className="h-5 w-5" />
               <span>Popular Games</span>
             </button>
             <button 
               onClick={() => handleFilterChange('new')}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium transition-colors ${filter === 'new' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium transition-colors ${filter === 'new' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
             >
               <Star className="h-5 w-5" />
               <span>New Games</span>
             </button>
             <button 
               onClick={() => handleFilterChange('recent')}
-              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-lg font-medium transition-colors ${filter === 'recent' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-lg font-medium transition-colors ${filter === 'recent' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
             >
               <div className="flex items-center gap-3">
                 <Clock className="h-5 w-5" />
@@ -206,7 +206,7 @@ export function GameBrowser({ initialGames, categories, lang, dictionary }: Game
             <div className="space-y-1">
               <button 
                 onClick={() => handleFilterChange('all')}
-                className={`w-full text-left px-4 py-2 text-sm rounded-lg font-medium transition-colors ${filter === 'all' && !activeCategory ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                className={`w-full text-left px-4 py-2 text-sm rounded-lg font-medium transition-colors ${filter === 'all' && !activeCategory ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-50'}`}
               >
                 All Categories
               </button>
@@ -214,7 +214,7 @@ export function GameBrowser({ initialGames, categories, lang, dictionary }: Game
                 <button 
                   key={category.id} 
                   onClick={() => handleFilterChange('category', category.name)}
-                  className={`w-full text-left px-4 py-2 text-sm rounded-lg transition-colors ${filter === 'category' && activeCategory === category.name ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-medium' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                  className={`w-full text-left px-4 py-2 text-sm rounded-lg transition-colors ${filter === 'category' && activeCategory === category.name ? 'text-blue-600 bg-blue-50 font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
                 >
                   {category.name}
                 </button>
@@ -225,14 +225,14 @@ export function GameBrowser({ initialGames, categories, lang, dictionary }: Game
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 py-12 px-6 lg:px-12">
+      <main className="flex-1 py-12 px-6 lg:px-12 bg-white">
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
               {getPageTitle()}
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               {getPageDescription()}
             </p>
             <div className="mt-4 text-sm font-medium text-gray-500">

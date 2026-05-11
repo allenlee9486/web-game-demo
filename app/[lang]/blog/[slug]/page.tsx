@@ -52,7 +52,7 @@ export default async function BlogPostPage({ params }: Props) {
   const readTime = Math.max(1, Math.ceil(words / 200));
 
   return (
-    <div className="flex flex-col bg-white dark:bg-gray-950 min-h-screen">
+    <div className="flex flex-col bg-white min-h-screen">
       <main className="flex-1 py-12">
         <article className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl">
@@ -62,15 +62,15 @@ export default async function BlogPostPage({ params }: Props) {
               <span className="text-gray-300">/</span>
               <Link href={getLocalizedPath('/blog', lang)} className="hover:text-blue-600 transition-colors">Blog</Link>
               <span className="text-gray-300">/</span>
-              <span className="text-gray-900 dark:text-gray-100 truncate max-w-[200px] md:max-w-md font-medium">{post.title}</span>
+              <span className="text-gray-900 truncate max-w-[200px] md:max-w-md font-medium">{post.title}</span>
             </nav>
 
             <header className="mb-10 text-center">
-              <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl md:text-5xl mb-6 leading-tight">
+              <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl md:text-5xl mb-6 leading-tight">
                 {post.title}
               </h1>
 
-              <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
                 <div className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
                   <time dateTime={post.date}>{post.date}</time>
@@ -87,21 +87,21 @@ export default async function BlogPostPage({ params }: Props) {
             </header>
             
             {post.coverImage && (
-              <div className="mb-12 overflow-hidden rounded-2xl shadow-xl ring-1 ring-gray-900/5 dark:ring-white/10">
-                 <div className="aspect-[21/9] w-full bg-cover bg-center bg-gray-100 dark:bg-gray-800" 
+              <div className="mb-12 overflow-hidden rounded-2xl shadow-xl ring-1 ring-gray-900/5">
+                 <div className="aspect-[21/9] w-full bg-cover bg-center bg-gray-100" 
                       style={{ backgroundImage: `url(${post.coverImage})` }} />
               </div>
             )}
             
-            <div className="prose prose-lg dark:prose-invert mx-auto mb-16 prose-img:rounded-xl prose-headings:scroll-mt-20">
+            <div className="prose prose-lg mx-auto mb-16 prose-img:rounded-xl prose-headings:scroll-mt-20">
               <MarkdownContent content={post.content} />
             </div>
 
             {/* Related Articles */}
             {relatedPosts.length > 0 && (
-              <div className="border-t border-gray-200 dark:border-gray-800 pt-16 mt-16">
+              <div className="border-t border-gray-200 pt-16 mt-16">
                 <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Related Articles</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">Related Articles</h2>
                   <Link href={`/${lang}/blog`} className="text-blue-600 hover:text-blue-700 font-medium text-sm hidden sm:block">
                     View All Posts &rarr;
                   </Link>

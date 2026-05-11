@@ -45,7 +45,7 @@ export const GameTabs = ({ game }: GameTabsProps) => {
   return (
     <div className="space-y-8 relative">
       {/* Sticky Tabs Navigation */}
-      <div className="sticky top-4 z-30 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-2">
+      <div className="sticky top-4 z-30 bg-white rounded-xl shadow-lg border border-gray-100 p-2">
         <div className="flex overflow-x-auto gap-2 no-scrollbar">
           {tabs.map((tab) => {
             const Icon = tab.icon;
