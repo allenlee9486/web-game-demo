@@ -12,43 +12,33 @@ interface GameTabsProps {
 export const GameTabs = ({ game }: GameTabsProps) => {
   const [activeTab, setActiveTab] = useState("overview");
 
-  // Helper to determine icon based on title or type
-  const getIconAndColor = (title: string, type: string) => {
-    const lowerTitle = title.toLowerCase();
-    
-    if (type === 'video' || lowerTitle.includes('video')) {
-      return { icon: Video, colorClass: 'text-red-600 dark:text-red-400', bgClass: 'bg-red-100 dark:bg-red-900/30' };
-    }
-    if (type === 'faq' || lowerTitle.includes('faq')) {
-      return { icon: CircleHelp, colorClass: 'text-purple-600 dark:text-purple-400', bgClass: 'bg-purple-100 dark:bg-purple-900/30' };
-    }
-    if (lowerTitle.includes('how to play')) {
-      return { icon: BookOpen, colorClass: 'text-green-600 dark:text-green-400', bgClass: 'bg-green-100 dark:bg-green-900/30' };
-    }
-    if (lowerTitle.includes('tips') || lowerTitle.includes('trick')) {
-      return { icon: Lightbulb, colorClass: 'text-amber-600 dark:text-amber-400', bgClass: 'bg-amber-100 dark:bg-amber-900/30' };
-    }
-    if (lowerTitle.includes('why') || lowerTitle.includes('reason')) {
-      return { icon: Heart, colorClass: 'text-red-600 dark:text-red-400', bgClass: 'bg-red-100 dark:bg-red-900/30' };
-    }
-    
-    return { icon: FileText, colorClass: 'text-blue-600 dark:text-blue-400', bgClass: 'bg-blue-100 dark:bg-blue-900/30' };
-  };
+  // Find specific modules or data for sections
+  const findModule = (id: string) => game.modules?.find(m => m.id === id);
+  const videoModule = game.modules?.find(m => m.type === 'video');
+  const faqModule = game.modules?.find(m => m.type === 'faq');
+
+  const videoUrl = videoModule?.videoUrl || (game as any).videoUrl;
 
   const tabs = [
     { id: "overview", label: "Game Overview", icon: Gamepad2 },
-    ...(game.modules || []).map(module => ({
-      id: module.id,
-      label: module.title,
-      icon: getIconAndColor(module.title, module.type).icon
-    }))
+    ...(videoUrl ? [{ id: "video", label: "Video", icon: Video }] : []),
+    { id: "how-to-play", label: "How to Play", icon: BookOpen },
+    { id: "features", label: "Features", icon: Lightbulb },
+    { id: "why", label: "Why Play?", icon: Heart },
+    { id: "faq", label: "FAQ", icon: CircleHelp },
   ];
 
   const scrollToSection = (id: string) => {
     setActiveTab(id);
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const offset = 100; // Offset for sticky header
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
     }
   };
 
@@ -67,12 +57,12 @@ export const GameTabs = ({ game }: GameTabsProps) => {
                 className={`
                   flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium whitespace-nowrap transition-all outline-none flex-1 justify-center
                   ${isActive 
-                    ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 shadow-sm ring-1 ring-blue-100 dark:ring-blue-900/50" 
-                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-gray-200"
+                    ? "text-green-600 bg-green-50 shadow-sm ring-1 ring-green-100" 
+                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   }
                 `}
               >
-                <Icon className={`w-4 h-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-500"}`} />
+                <Icon className={`w-4 h-4 ${isActive ? "text-green-600" : "text-gray-400"}`} />
                 {tab.label}
               </button>
             );
@@ -82,78 +72,145 @@ export const GameTabs = ({ game }: GameTabsProps) => {
 
       {/* Stacked Content Sections */}
       <div className="space-y-8">
-        {/* Game Overview */}
-        <div id="overview" className="scroll-mt-28 bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 md:p-8">
-           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
-              <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                  <Gamepad2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+        {/* 1. Game Overview */}
+        <div id="overview" className="scroll-mt-28 bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                  <Gamepad2 className="w-6 h-6 text-blue-600" />
               </div>
-              Play {game.title}
+              What is {game.title}?
            </h2>
-           <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-              <MarkdownContent content={game.content} />
+           <div className="flex flex-col gap-8">
+              {(game.thumbnail && !(game as any).hideWhatIsImage) && (
+                <div className="relative w-full aspect-video md:aspect-[21/9] overflow-hidden rounded-2xl border border-gray-100 shadow-sm">
+                  <img 
+                    src={game.thumbnail} 
+                    alt={`${game.title} overview`}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+              )}
+              <div className="prose max-w-none text-gray-600">
+                <MarkdownContent content={game.content || `Learn all about ${game.title}, its unique mechanics, and what makes it one of the best games in its genre.`} />
+              </div>
            </div>
         </div>
-        
-        {/* Dynamic Modules */}
-        {(game.modules || []).map(module => {
-          const { icon: Icon, colorClass, bgClass } = getIconAndColor(module.title, module.type);
-          
-          return (
-            <div key={module.id} id={module.id} className="scroll-mt-28 bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 md:p-8">
-               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${bgClass}`}>
-                      <Icon className={`w-6 h-6 ${colorClass}`} />
+
+        {/* 2. Video */}
+        {videoUrl && (
+          <div id="video" className="scroll-mt-28 bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                <div className="p-2 bg-red-100 rounded-lg">
+                    <Video className="w-6 h-6 text-red-600" />
+                </div>
+                {videoModule?.title || "Gameplay Video"}
+             </h2>
+             <div className="aspect-video w-full overflow-hidden rounded-2xl bg-gray-100 flex items-center justify-center border border-gray-100">
+                <iframe 
+                  src={videoUrl}
+                  className="w-full h-full"
+                  title={videoModule?.title || `Watch ${game.title} in Action`}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+             </div>
+          </div>
+        )}
+
+        {/* 3. How to Play */}
+        <div id="how-to-play" className="scroll-mt-28 bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+              <div className="p-2 bg-green-100 rounded-lg">
+                  <BookOpen className="w-6 h-6 text-green-600" />
+              </div>
+              How to Play {game.title}
+           </h2>
+           <div className="prose max-w-none text-gray-600">
+              <MarkdownContent content={game.howToPlay || findModule('how-to-play')?.content || "We are currently preparing a detailed guide on how to play this game. Check back soon for controls and strategies!"} />
+           </div>
+        </div>
+
+        {/* 4. Features */}
+        <div id="features" className="scroll-mt-28 bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+              <div className="p-2 bg-amber-100 rounded-lg">
+                  <Lightbulb className="w-6 h-6 text-amber-600" />
+              </div>
+              Key Features
+           </h2>
+           <div className="flex flex-col md:flex-row items-center gap-8">
+              {/* Image - Left on Desktop */}
+              {(findModule('features')?.image || (game as any).featuresImage) && (
+                <div className="w-full md:w-1/3 flex-shrink-0">
+                   <div className="relative aspect-square overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 p-4 shadow-inner">
+                      <img 
+                        src={findModule('features')?.image || (game as any).featuresImage} 
+                        alt={`${game.title} Features`}
+                        className="w-full h-full object-contain transition-transform duration-500 hover:scale-110"
+                      />
+                   </div>
+                </div>
+              )}
+              
+              {/* Text - Right on Desktop */}
+              <div className={`w-full ${(findModule('features')?.image || (game as any).featuresImage) ? 'md:w-2/3' : ''} prose max-w-none text-gray-600`}>
+                 <MarkdownContent content={findModule('features')?.content || "Discover the exciting features that set this game apart, from unique power-ups to challenging levels."} />
+              </div>
+           </div>
+        </div>
+
+        {/* 5. Why Play */}
+        <div id="why" className="scroll-mt-28 bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+              <div className="p-2 bg-pink-100 rounded-lg">
+                  <Heart className="w-6 h-6 text-pink-600" />
+              </div>
+              Why Play {game.title}?
+           </h2>
+           <div className="flex flex-col md:flex-row items-center gap-8">
+              {/* Text - Left on Desktop */}
+              <div className={`w-full ${(findModule('why-play')?.image || (game as any).whyPlayImage) ? 'md:w-2/3' : ''} prose max-w-none text-gray-600`}>
+                 <MarkdownContent content={game.whyPlay || findModule('why-play')?.content || "Find out why thousands of players enjoy this game every day and what makes it so addictive."} />
+              </div>
+
+              {/* Image - Right on Desktop */}
+              {(findModule('why-play')?.image || (game as any).whyPlayImage) && (
+                <div className="w-full md:w-1/3 flex-shrink-0">
+                   <div className="relative aspect-square overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 p-4 shadow-inner">
+                      <img 
+                        src={findModule('why-play')?.image || (game as any).whyPlayImage} 
+                        alt={`Why Play ${game.title}`}
+                        className="w-full h-full object-contain transition-transform duration-500 hover:scale-110"
+                      />
+                   </div>
+                </div>
+              )}
+           </div>
+        </div>
+
+        {/* 6. FAQ */}
+        <div id="faq" className="scroll-mt-28 bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+              <div className="p-2 bg-purple-100 rounded-lg">
+                  <CircleHelp className="w-6 h-6 text-purple-600" />
+              </div>
+              Frequently Asked Questions
+           </h2>
+           <div className="space-y-4">
+              {(faqModule?.items || game.faq || []).length > 0 ? (
+                (faqModule?.items || game.faq || []).map((item, index) => (
+                  <div key={index} className="border-b border-gray-100 pb-4 last:border-0">
+                    <h3 className="font-bold text-gray-900 mb-2">Q: {item.question}</h3>
+                    <p className="text-gray-600">A: {item.answer}</p>
                   </div>
-                  {module.title}
-               </h2>
-               
-               {module.type === 'markdown' && (
-                 <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                    {module.content ? (
-                      <MarkdownContent content={module.content} />
-                    ) : (
-                      <p className="text-gray-500 italic">No content available.</p>
-                    )}
-                 </div>
-               )}
-
-               {module.type === 'faq' && (
-                 <div className="space-y-4">
-                    {module.items && module.items.length > 0 ? (
-                      module.items.map((item, index) => (
-                          <div key={index} className="border border-gray-100 dark:border-gray-700 rounded-lg p-4 hover:shadow-sm transition-shadow">
-                              <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">{item.question}</h3>
-                              <p className="text-gray-600 dark:text-gray-300">{item.answer}</p>
-                          </div>
-                      ))
-                    ) : (
-                      <p className="text-gray-500 italic">No questions yet.</p>
-                    )}
-                 </div>
-               )}
-
-               {module.type === 'video' && (
-                 <div className="aspect-video w-full rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-black">
-                   {module.videoUrl ? (
-                     <iframe
-                       src={module.videoUrl}
-                       title={module.title}
-                       className="w-full h-full"
-                       frameBorder="0"
-                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                       allowFullScreen
-                     />
-                   ) : (
-                     <div className="flex items-center justify-center h-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                       <p>No video URL provided</p>
-                     </div>
-                   )}
-                 </div>
-               )}
-            </div>
-          );
-        })}
+                ))
+              ) : (
+                <p className="text-gray-500 italic">No questions answered yet. Have a question? Contact us!</p>
+              )}
+           </div>
+        </div>
       </div>
     </div>
   );

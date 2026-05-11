@@ -13,7 +13,7 @@ export const GameCardSmall = ({ game, locale }: GameCardSmallProps) => {
   return (
     <Link 
       href={getLocalizedPath(`/games/${game.slug}`, locale as Locale)}
-      className="group block overflow-hidden rounded-lg bg-gray-800 hover:ring-2 hover:ring-blue-500 transition-all"
+      className="group block overflow-hidden rounded-lg bg-gray-50 border border-gray-100 hover:ring-2 hover:ring-[#3c9d60] transition-all shadow-sm hover:shadow-md"
     >
       <div className="relative aspect-video w-full">
         <Image
@@ -24,7 +24,7 @@ export const GameCardSmall = ({ game, locale }: GameCardSmallProps) => {
         />
       </div>
       <div className="p-2">
-        <h3 className="truncate text-sm font-medium text-white group-hover:text-blue-400">
+        <h3 className="truncate text-sm font-medium text-gray-800 group-hover:text-[#3c9d60]">
           {game.title}
         </h3>
       </div>

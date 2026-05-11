@@ -24,7 +24,7 @@ export function Footer({ lang, dictionary, settings }: FooterProps) {
   const blogHref = isDefault ? '/blog' : `/${lang}/blog`;
 
   return (
-    <footer className="border-t bg-gray-50 dark:bg-gray-950 dark:border-gray-800 mt-auto">
+    <footer className="border-t border-[#348a54] bg-[#3c9d60] text-white mt-auto">
       <div className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-3 gap-8">
           <div>
@@ -35,25 +35,20 @@ export function Footer({ lang, dictionary, settings }: FooterProps) {
                 "GamePortal"
               )}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-white/80">
               Your destination for the best free-to-play web games. Play instantly in your browser without downloads.
             </p>
           </div>
           <div>
             <h3 className="font-bold mb-4">{dictionary.common.about}</h3>
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-white/80">
               <li>
-                <Link href={gamesHref} className="hover:text-blue-600">
+                <Link href={gamesHref} className="hover:text-white transition-colors">
                   {dictionary.common.games}
                 </Link>
               </li>
               <li>
-                <Link href={blogHref} className="hover:text-blue-600">
-                  {dictionary.common.blog}
-                </Link>
-              </li>
-              <li>
-                <Link href={getLocalizedPath("/privacy", lang)} className="hover:text-blue-600">
+                <Link href={getLocalizedPath("/privacy", lang)} className="hover:text-white transition-colors">
                   {dictionary.common.privacy}
                 </Link>
               </li>
@@ -61,25 +56,25 @@ export function Footer({ lang, dictionary, settings }: FooterProps) {
           </div>
           <div>
             <h3 className="font-bold mb-4">Connect</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-white/80">
               Follow us for updates on new games and features.
             </p>
           </div>
         </div>
-        <div className="border-t dark:border-gray-800 mt-8 pt-8">
+        <div className="border-t border-white/10 mt-8 pt-8">
           <div className="mb-6">
             <FooterLocaleSwitcher />
           </div>
-          <div className="flex flex-col items-center gap-4 text-sm text-gray-500">
+          <div className="flex flex-col items-center gap-4 text-sm text-white/60">
             <div>
               © {new Date().getFullYear()} {settings.logo ? "GamePortal" : "GamePortal"}. {dictionary.common.rights_reserved}
             </div>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href={getLocalizedPath("/privacy", lang)} className="hover:text-blue-600">Privacy Policy</Link>
-              <Link href={getLocalizedPath("/terms", lang)} className="hover:text-blue-600">Terms of Service</Link>
-              <Link href={getLocalizedPath("/about", lang)} className="hover:text-blue-600">About Us</Link>
-              <Link href={getLocalizedPath("/contact", lang)} className="hover:text-blue-600">Contact Us</Link>
-              <Link href={getLocalizedPath("/copyright", lang)} className="hover:text-blue-600">Copyright Notice</Link>
+              <Link href={getLocalizedPath("/privacy", lang)} className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href={getLocalizedPath("/terms", lang)} className="hover:text-white transition-colors">Terms of Service</Link>
+              <Link href={getLocalizedPath("/about", lang)} className="hover:text-white transition-colors">About Us</Link>
+              <Link href={getLocalizedPath("/contact", lang)} className="hover:text-white transition-colors">Contact Us</Link>
+              <Link href={getLocalizedPath("/copyright", lang)} className="hover:text-white transition-colors">Copyright Notice</Link>
             </div>
           </div>
         </div>

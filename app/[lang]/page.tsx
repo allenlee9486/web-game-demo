@@ -1,22 +1,36 @@
 import { getGameBySlug, getAllGames } from "@/lib/api";
-import { Locale } from "@/i18n-config";
+import { Locale, i18n } from "@/i18n-config";
+
+export async function generateStaticParams() {
+  return i18n.locales.map((locale) => ({ lang: locale as string }));
+}
+
 import { getDictionary } from "@/dictionaries/get-dictionary";
 import { Game } from "@/types";
 import { GamePlayer } from "@/components/home/GamePlayer";
 import { GameFeatures } from "@/components/home/GameFeatures";
 import { GameComments } from "@/components/home/GameComments";
-import { GameListSidebar } from "@/components/home/GameListSidebar";
 import { GameListBottom } from "@/components/home/GameListBottom";
 import { GameCategories } from "@/components/home/GameCategories";
 import { GameTabs } from "@/components/home/GameTabs";
+import { GameVisitRecorder } from "@/components/GameVisitRecorder";
 import fs from 'fs';
 import path from 'path';
+import { Metadata } from "next";
 
-export default async function Home({
-  params,
-}: {
+interface Props {
   params: Promise<{ lang: Locale }>;
-}) {
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lang } = await params;
+  return {
+    title: "GamePortal - Free Online Games",
+    description: "Play the best free online games.",
+  };
+}
+
+export default async function Home({ params }: Props) {
   const { lang } = await params;
   const dictionary = await getDictionary(lang);
   
@@ -62,52 +76,52 @@ export default async function Home({
 
   // Prepare lists (exclude main game if possible to avoid dupes, or just show all)
   const otherGames = allGames.filter(g => g.slug !== mainGame?.slug);
-  const sidebarGames = otherGames.slice(0, 6); // 2 cols * 3 rows = 6 games
-  const bottomGames = otherGames.slice(6, 11); // 5 games
+  const bottomGames = otherGames.slice(0, 5);
 
   return (
     <div className="flex flex-col bg-white dark:bg-gray-950 min-h-screen">
-      {/* 1. Header is in Layout */}
+      <GameVisitRecorder slug={mainGame.slug} />
+      
+      {/* 1. Hero / Main Section */}
+      <div className="bg-white py-12 border-b border-gray-100">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+            Play <span className="text-green-600">{mainGame.title}</span> Online
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+            Experience the ultimate browser-based gaming with realistic physics and addictive challenges.
+          </p>
+        </div>
+      </div>
 
-      {/* 2. Game Area (Player + Sidebar + Bottom) */}
-      <div className="bg-gray-900 py-8">
+      {/* 2. Game Area (Player + Bottom) */}
+      <div className="bg-white py-8">
         <div className="container mx-auto px-4">
           
-          <div className="flex flex-col lg:flex-row gap-6">
-            {/* Left: Main Game Player */}
-            <div className="w-full lg:w-3/4">
+          <div className="flex flex-col gap-6">
+            {/* Main Game Player */}
+            <div className="w-full">
                <GamePlayer game={mainGame} locale={lang} dictionary={dictionary} />
-            </div>
-
-            {/* Right: Sidebar Games (2 cols) */}
-            <div className="w-full lg:w-1/4">
-               <GameListSidebar 
-                  games={sidebarGames} 
-                  locale={lang} 
-                  title="Popular Games" 
-               />
             </div>
           </div>
 
           {/* Bottom: New Games (5 cols) */}
           <div className="mt-8">
              <GameListBottom 
-                games={bottomGames.length > 0 ? bottomGames : sidebarGames.slice(0, 5)} 
+                games={bottomGames} 
                 locale={lang} 
-                title="New Games" 
+                title="New & Popular Games" 
              />
           </div>
 
         </div>
       </div>
 
-      {/* 3. Features (Optional: Keep or Remove? User didn't explicitly say remove, but replaced with new layout below. I'll keep it as a separator for now or remove if it conflicts. I'll remove it to be cleaner as per design) */}
-      
-      {/* 4. Game Details & Comments Area (New Layout) */}
-      <div className="container mx-auto px-4 py-8">
-         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* 3. Game Details & Comments Area */}
+      <div className="container mx-auto px-4 py-12">
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Left Column (2/3 width) */}
-            <div className="lg:col-span-2 space-y-8">
+            <div className="lg:col-span-2 space-y-12">
                <GameCategories game={mainGame} locale={lang} />
                <GameTabs game={mainGame} />
             </div>
@@ -118,8 +132,6 @@ export default async function Home({
             </div>
          </div>
       </div>
-
-      {/* 5. Footer is in Layout */}
     </div>
   );
 }

@@ -93,6 +93,7 @@ export function getGameBySlug(slug: string, locale: Locale = i18n.defaultLocale)
       ? (data.publishDate || data.date).toISOString() 
       : (data.publishDate || data.date),
     featured: data.featured,
+    videoUrl: data.videoUrl,
     content,
     modules,
     howToPlay: data.howToPlay,

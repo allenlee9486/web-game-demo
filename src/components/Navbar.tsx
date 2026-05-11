@@ -22,14 +22,14 @@ export function Navbar({ lang, dictionary, settings }: NavbarProps) {
   const homeHref = isDefault ? '/' : `/${lang}`;
 
   return (
-    <nav className="border-b bg-white dark:bg-gray-950 dark:border-gray-800">
+    <nav className="border-b border-[#348a54] bg-[#3c9d60] text-white">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href={homeHref} className="flex items-center gap-2 font-bold text-xl">
           {settings.logo ? (
             <img src={settings.logo} alt="Logo" className="h-8 w-auto object-contain" />
           ) : (
             <>
-              <Gamepad2 className="h-6 w-6 text-blue-600" />
+              <Gamepad2 className="h-6 w-6 text-white" />
               <span>GamePortal</span>
             </>
           )}
@@ -41,7 +41,7 @@ export function Navbar({ lang, dictionary, settings }: NavbarProps) {
               <Link 
                 key={item.id} 
                 href={getLocalizedPath(item.href, lang)} 
-                className="hover:text-blue-600 transition-colors"
+                className="text-white/90 hover:text-white transition-colors"
               >
                 {item.label}
               </Link>

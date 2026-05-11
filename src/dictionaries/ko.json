@@ -38,7 +38,8 @@
     "instructions": "Instructions",
     "instructions_desc": "Click inside the game window to focus. Use your mouse and keyboard to control the game. Most games support fullscreen mode for a better experience.",
     "fullscreen": "Fullscreen",
-    "ad_space": "Advertisement Space"
+    "ad_space": "Advertisement Space",
+    "other_games": "다른 흥미진진한 게임"
   },
   "blog": {
     "title": "Our Blog",

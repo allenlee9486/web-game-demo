@@ -5,6 +5,7 @@ export interface GameModule {
   content?: string; // For markdown type
   items?: { question: string; answer: string }[]; // For faq type
   videoUrl?: string; // For video type (iframe url)
+  image?: string; // For image display in modules
 }
 
 export interface Game {
@@ -14,6 +15,7 @@ export interface Game {
   category: string;
   thumbnail: string;
   gameUrl: string;
+  videoUrl?: string;
   publishDate: string;
   featured?: boolean;
   content: string;

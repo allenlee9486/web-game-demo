@@ -25,9 +25,9 @@ export const GameComments = ({ slug }: GameCommentsProps) => {
       id: 1,
       author: "BusStopGamer",
       avatarColor: "bg-blue-600",
-      timeAgo: "1 years ago",
+      timeAgo: "2 months ago",
       rating: 4.8,
-      content: "This is a solid time-killer for my commute! Easy to pick up and play a round or two. Wish there was a bit more variety in the poker modes, tho. Still, really fun!",
+      content: "This is a solid time-killer for my commute! Easy to pick up and play a round or two. The mechanics are simple yet addictive. Definitely worth a try!",
       likes: 12,
       dislikes: 1
     },
@@ -35,16 +35,228 @@ export const GameComments = ({ slug }: GameCommentsProps) => {
       id: 2,
       author: "HighRollerHank",
       avatarColor: "bg-green-600",
-      timeAgo: "1 years ago",
+      timeAgo: "3 months ago",
       rating: 4.9,
-      content: "The leaderboard is where it's at! Been grinding to get into the top 10. The AI can be a bit predictable at times, but the thrill of going all-in is real.",
+      content: "The leaderboard is where it's at! Been grinding to get into the top 10. The thrill of going all-in is real, and the graphics are quite polished.",
       likes: 8,
+      dislikes: 0
+    },
+    {
+      id: 3,
+      author: "ShadowNinja",
+      avatarColor: "bg-purple-600",
+      timeAgo: "1 month ago",
+      rating: 4.5,
+      content: "Great game! I love the strategy involved. It's more than just luck, you really have to think ahead. A few more levels would be nice though.",
+      likes: 5,
+      dislikes: 0
+    },
+    {
+      id: 4,
+      author: "PixelMaster",
+      avatarColor: "bg-amber-600",
+      timeAgo: "2 weeks ago",
+      rating: 5.0,
+      content: "Absolutely amazing! The art style is unique and the gameplay is smooth as butter. I've been playing for 3 hours straight and can't put it down.",
+      likes: 15,
+      dislikes: 0
+    },
+    {
+      id: 5,
+      author: "StrategyQueen",
+      avatarColor: "bg-pink-600",
+      timeAgo: "1 week ago",
+      rating: 4.7,
+      content: "Very well-designed game. The progression system feels rewarding and the difficulty curve is just right. Highly recommend to anyone who likes a challenge.",
+      likes: 7,
+      dislikes: 1
+    },
+    {
+      id: 6,
+      author: "CasualJoe",
+      avatarColor: "bg-indigo-600",
+      timeAgo: "4 days ago",
+      rating: 4.2,
+      content: "Perfect for a quick break. Doesn't require too much commitment but keeps you engaged. Will be playing this more often!",
+      likes: 3,
+      dislikes: 0
+    },
+    {
+      id: 7,
+      author: "KlifurFanatic",
+      avatarColor: "bg-red-500",
+      timeAgo: "5 days ago",
+      rating: 5.0,
+      content: "The physics in Klifur are so unique! It feels like real climbing but with a hilarious twist. Level 10 is driving me crazy but I love it.",
+      likes: 22,
+      dislikes: 0
+    },
+    {
+      id: 8,
+      author: "MountainMan",
+      avatarColor: "bg-emerald-600",
+      timeAgo: "6 days ago",
+      rating: 4.9,
+      content: "As a real rock climber, this game actually captures the decision making process of finding the right holds. Super impressed!",
+      likes: 18,
+      dislikes: 2
+    },
+    {
+      id: 9,
+      author: "ZenMaster",
+      avatarColor: "bg-sky-400",
+      timeAgo: "1 week ago",
+      rating: 4.6,
+      content: "The lack of music makes it so relaxing. Just me and the wall. Very meditative experience until you fall off lol.",
+      likes: 9,
+      dislikes: 0
+    },
+    {
+      id: 10,
+      author: "SpeedRunnerX",
+      avatarColor: "bg-orange-500",
+      timeAgo: "1 week ago",
+      rating: 4.8,
+      content: "Trying to beat the developer's best route in every stage. Some of these stars are incredibly hard to get. Great challenge!",
+      likes: 31,
+      dislikes: 1
+    },
+    {
+      id: 11,
+      author: "BoulderingBabe",
+      avatarColor: "bg-rose-400",
+      timeAgo: "2 weeks ago",
+      rating: 4.7,
+      content: "The character's floppy arms are so funny. I spend half my time just laughing at the falls. But clearing a hard route feels so good.",
+      likes: 14,
+      dislikes: 0
+    },
+    {
+      id: 12,
+      author: "PhysicsGeek",
+      avatarColor: "bg-teal-500",
+      timeAgo: "2 weeks ago",
+      rating: 4.5,
+      content: "The squishy physics engine is actually quite sophisticated. The way weight shifts and momentum carries is spot on. Quality work.",
+      likes: 11,
+      dislikes: 0
+    },
+    {
+      id: 13,
+      author: "IndieLover",
+      avatarColor: "bg-violet-600",
+      timeAgo: "3 weeks ago",
+      rating: 5.0,
+      content: "Torfi has done it again. Such a simple concept executed with so much personality. This is why I love indie games.",
+      likes: 25,
+      dislikes: 0
+    },
+    {
+      id: 14,
+      author: "GamerDad",
+      avatarColor: "bg-slate-700",
+      timeAgo: "3 weeks ago",
+      rating: 4.3,
+      content: "My kids and I take turns trying to beat levels. It's easy enough for them to understand but hard enough to keep me engaged too.",
+      likes: 6,
+      dislikes: 0
+    },
+    {
+      id: 15,
+      author: "CoffeeBreakGamer",
+      avatarColor: "bg-amber-800",
+      timeAgo: "1 month ago",
+      rating: 4.6,
+      content: "Perfect game to play while drinking my morning coffee. Quick levels, satisfying progress, and runs perfectly in the browser.",
+      likes: 10,
+      dislikes: 0
+    },
+    {
+      id: 16,
+      author: "HardcoreHenry",
+      avatarColor: "bg-zinc-800",
+      timeAgo: "1 month ago",
+      rating: 4.1,
+      content: "Level 12 is absolute madness. Took me over 100 attempts but I finally made it. The sense of achievement is real.",
+      likes: 19,
+      dislikes: 3
+    },
+    {
+      id: 17,
+      author: "ArtEnthusiast",
+      avatarColor: "bg-cyan-500",
+      timeAgo: "1 month ago",
+      rating: 4.9,
+      content: "I love the color palette. It's so clean and modern. The minimalist design really lets the physics shine.",
+      likes: 7,
+      dislikes: 0
+    },
+    {
+      id: 18,
+      author: "MobileGamer99",
+      avatarColor: "bg-lime-500",
+      timeAgo: "1 month ago",
+      rating: 4.4,
+      content: "Works surprisingly well on my phone's browser. Touch controls are intuitive. Great for killing time in waiting rooms.",
+      likes: 4,
+      dislikes: 0
+    },
+    {
+      id: 19,
+      author: "PuzzleSolver",
+      avatarColor: "bg-fuchsia-600",
+      timeAgo: "2 months ago",
+      rating: 4.7,
+      content: "It's more of a puzzle game than an action game. You have to figure out the right sequence of moves. Very clever level design.",
+      likes: 13,
+      dislikes: 0
+    },
+    {
+      id: 20,
+      author: "RetroFan",
+      avatarColor: "bg-orange-600",
+      timeAgo: "2 months ago",
+      rating: 4.8,
+      content: "Reminds me of some of those old Flash physics games but with modern polish. A breath of fresh air in today's mobile market.",
+      likes: 16,
+      dislikes: 0
+    },
+    {
+      id: 21,
+      author: "CouchPotato",
+      avatarColor: "bg-stone-500",
+      timeAgo: "2 months ago",
+      rating: 4.2,
+      content: "Sometimes the limbs get stuck in weird ways, but it usually just adds to the comedy. Fun little game for free.",
+      likes: 5,
+      dislikes: 1
+    },
+    {
+      id: 22,
+      author: "GamerGirl92",
+      avatarColor: "bg-pink-400",
+      timeAgo: "3 months ago",
+      rating: 5.0,
+      content: "Obsessed with Klifur! I've already shared it with all my friends. We're competing to see who can get all the stars first.",
+      likes: 28,
+      dislikes: 0
+    },
+    {
+      id: 23,
+      author: "NewbieClimber",
+      avatarColor: "bg-yellow-500",
+      timeAgo: "3 months ago",
+      rating: 4.5,
+      content: "Just started playing today and I'm already on level 5. It's very easy to get into but I can see it getting much harder!",
+      likes: 2,
       dislikes: 0
     }
   ];
 
   const [localComments, setLocalComments] = useState<Comment[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const commentsPerPage = 10;
   
   // Form State
   const [name, setName] = useState("");
@@ -91,10 +303,25 @@ export const GameComments = ({ slug }: GameCommentsProps) => {
   };
 
   const allComments = mounted ? [...localComments, ...staticComments] : staticComments;
+  
+  // Pagination logic
+  const totalPages = Math.ceil(allComments.length / commentsPerPage);
+  const indexOfLastComment = currentPage * commentsPerPage;
+  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+  const currentComments = allComments.slice(indexOfFirstComment, indexOfLastComment);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Optional: Scroll to top of comments section
+    const element = document.getElementById("comments-section");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
-    <div className="bg-gray-200 dark:bg-gray-800/50 p-6 rounded-xl">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Comments ({allComments.length})</h2>
+    <div id="comments-section" className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">Comments ({allComments.length})</h2>
       
       {/* Rating Input */}
       <div className="flex items-center gap-2 mb-4">
@@ -138,8 +365,8 @@ export const GameComments = ({ slug }: GameCommentsProps) => {
 
       {/* Comment List */}
       <div className="space-y-4">
-        {allComments.map((comment) => (
-          <div key={comment.id} className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm">
+        {currentComments.map((comment) => (
+          <div key={comment.id} className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm border border-gray-50">
              <div className="flex items-start gap-3">
                 <div className={`w-8 h-8 rounded-full ${comment.avatarColor} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
                    {comment.author.charAt(0).toUpperCase()}
@@ -162,14 +389,14 @@ export const GameComments = ({ slug }: GameCommentsProps) => {
                    </p>
 
                    <div className="flex items-center gap-4 text-gray-400">
-                      <button className="flex items-center gap-1 text-xs hover:text-blue-500">
-                        <ThumbsUp className="w-3 h-3" /> {comment.likes} Like
+                      <button className="flex items-center gap-1 text-xs hover:text-blue-500 transition-colors">
+                        <ThumbsUp className="w-3 h-3" /> {comment.likes}
                       </button>
-                      <button className="flex items-center gap-1 text-xs hover:text-red-500">
-                        <ThumbsDown className="w-3 h-3" /> {comment.dislikes} Dislike
+                      <button className="flex items-center gap-1 text-xs hover:text-red-500 transition-colors">
+                        <ThumbsDown className="w-3 h-3" /> {comment.dislikes}
                       </button>
-                      <button className="flex items-center gap-1 text-xs hover:text-gray-600 dark:hover:text-gray-200">
-                        <MessageSquare className="w-3 h-3" /> Reply
+                      <button className="flex items-center gap-1 text-xs hover:text-gray-600 transition-colors dark:hover:text-gray-200">
+                        <MessageSquare className="w-3 h-3" />
                       </button>
                    </div>
                 </div>
@@ -177,6 +404,43 @@ export const GameComments = ({ slug }: GameCommentsProps) => {
           </div>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-8">
+          <button 
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="p-2 rounded-lg border border-gray-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-xs">Prev</span>
+          </button>
+          
+          <div className="flex gap-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`w-8 h-8 rounded-lg text-xs font-medium transition-all ${
+                  currentPage === page 
+                    ? "bg-blue-500 text-white shadow-md shadow-blue-200" 
+                    : "border border-gray-100 text-gray-500 hover:bg-gray-50"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+
+          <button 
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="p-2 rounded-lg border border-gray-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-xs">Next</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { MarkdownContent } from "@/components/MarkdownContent";
 import { Metadata } from "next";
+import { i18n } from "@/i18n-config";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -17,6 +18,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${title} - GamePortal`,
   };
+}
+
+export async function generateStaticParams() {
+  const pagesDir = path.join(process.cwd(), 'content/pages');
+  if (!fs.existsSync(pagesDir)) return [];
+  
+  const files = fs.readdirSync(pagesDir);
+  const paths: { slug: string; lang: string }[] = [];
+  
+  i18n.locales.forEach(lang => {
+    files.forEach(file => {
+      if (file.endsWith('.md')) {
+        paths.push({
+          slug: file.replace('.md', ''),
+          lang: lang
+        });
+      }
+    });
+  });
+  
+  return paths;
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {

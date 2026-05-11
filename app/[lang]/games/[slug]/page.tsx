@@ -1,7 +1,7 @@
 import { getGameBySlug, getGameSlugs, getAllGames } from "@/lib/api";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Locale } from "@/i18n-config";
+import { Locale, i18n } from "@/i18n-config";
 import { getDictionary } from "@/dictionaries/get-dictionary";
 import { GamePlayer } from "@/components/home/GamePlayer";
 import { GameListSidebar } from "@/components/home/GameListSidebar";
@@ -10,18 +10,29 @@ import { GameCategories } from "@/components/home/GameCategories";
 import { GameTabs } from "@/components/home/GameTabs";
 import { GameComments } from "@/components/home/GameComments";
 import { GameVisitRecorder } from "@/components/GameVisitRecorder";
+import Script from "next/script";
 
 interface Props {
   params: Promise<{ slug: string; lang: Locale }>;
 }
 
+const domain = 'https://klifur.online';
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, lang } = await params;
   try {
     const game = getGameBySlug(slug, lang);
+    const isDefault = lang === i18n.defaultLocale;
+    const canonical = isDefault 
+      ? `${domain}/games/${slug}` 
+      : `${domain}/${lang}/games/${slug}`;
+
     return {
-      title: `${game.title}: Free Pokémon Tower Defense Game Online`,
+      title: `${game.title} - Play ${game.title} Online for Free`,
       description: game.description,
+      alternates: {
+        canonical,
+      }
     };
   } catch {
     return {
@@ -32,9 +43,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export async function generateStaticParams() {
   const slugs = getGameSlugs();
-  return slugs.map((slug) => ({
-    slug: slug.replace(/\.md$/, ""),
-  }));
+  const paths: { slug: string; lang: string }[] = [];
+  
+  i18n.locales.forEach(lang => {
+    slugs.forEach(slug => {
+      paths.push({
+        slug: slug.replace(/\.md$/, ""),
+        lang: lang as string
+      });
+    });
+  });
+  
+  return paths;
 }
 
 export default async function GamePage({ params }: Props) {
@@ -49,38 +69,72 @@ export default async function GamePage({ params }: Props) {
   }
 
   const allGames = getAllGames(lang).filter(g => g.slug !== game.slug);
-  const sidebarGames = allGames.slice(0, 6);
-  const bottomGames = allGames.slice(6, 11);
+  // Get 12 games for the bottom section
+  const bottomGames = allGames.slice(0, 12);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": game.title,
+    "description": game.description,
+    "image": `${domain}${game.thumbnail}`,
+    "url": `${domain}/${lang}/games/${game.slug}`,
+    "genre": game.category,
+    "playMode": "Multiplayer",
+    "applicationCategory": "Game",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  };
+
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": game.faq?.map(f => ({
+      "@type": "Question",
+      "name": f.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.answer
+      }
+    }))
+  };
 
   return (
     <div className="flex flex-col bg-white dark:bg-gray-950 min-h-screen">
+      <Script
+        id="game-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {game.faq && game.faq.length > 0 && (
+        <Script
+          id="faq-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        />
+      )}
       <GameVisitRecorder slug={game.slug} />
-      {/* Game Area (Player + Sidebar + Bottom) */}
-      <div className="bg-gray-900 py-8">
+      {/* Game Area (Player + Bottom) */}
+      <div className="bg-white py-8">
         <div className="container mx-auto px-4">
           
-          <div className="flex flex-col lg:flex-row gap-6">
-            {/* Left: Main Game Player */}
-            <div className="w-full lg:w-3/4">
+          <div className="flex flex-col gap-6">
+            {/* Main Game Player */}
+            <div className="w-full">
                <GamePlayer game={game} locale={lang} dictionary={dictionary} />
-            </div>
-
-            {/* Right: Sidebar Games (2 cols) */}
-            <div className="w-full lg:w-1/4">
-               <GameListSidebar 
-                  games={sidebarGames} 
-                  locale={lang} 
-                  title="People also play" 
-               />
             </div>
           </div>
 
           {/* Bottom: New Games (5 cols) */}
           <div className="mt-8">
              <GameListBottom 
-                games={bottomGames.length > 0 ? bottomGames : sidebarGames.slice(0, 5)} 
+                games={bottomGames} 
                 locale={lang} 
-                title="More Games" 
+                title={dictionary.games.other_games} 
              />
           </div>
 

@@ -38,7 +38,8 @@
     "instructions": "操作说明",
     "instructions_desc": "点击游戏窗口以获取焦点。使用鼠标和键盘控制游戏。大多数游戏支持全屏模式以获得更好的体验。",
     "fullscreen": "全屏",
-    "ad_space": "广告位"
+    "ad_space": "广告位",
+    "other_games": "其他精彩游戏"
   },
   "blog": {
     "title": "博客",

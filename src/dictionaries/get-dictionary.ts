@@ -11,4 +11,9 @@ const dictionaries = {
   ko: () => import("./ko.json").then((module) => module.default),
 };
 
-export const getDictionary = async (locale: Locale) => dictionaries[locale]();
+export const getDictionary = async (locale: Locale) => {
+  if (!dictionaries[locale]) {
+    return dictionaries.en();
+  }
+  return dictionaries[locale]();
+};

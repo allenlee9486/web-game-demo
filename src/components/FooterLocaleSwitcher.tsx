@@ -35,9 +35,9 @@ export default function FooterLocaleSwitcher() {
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500">
+    <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-white/60">
       <div className="flex items-center gap-2">
-        <Globe className="h-4 w-4" />
+        <Globe className="h-4 w-4 text-white/60" />
       </div>
       {i18n.locales.map((locale) => (
         <Link
@@ -45,8 +45,8 @@ export default function FooterLocaleSwitcher() {
           href={redirectedPathName(locale)}
           className={`flex items-center gap-1.5 transition-colors ${
             currentLocale === locale
-              ? "text-blue-600 font-medium"
-              : "hover:text-blue-600"
+              ? "text-white font-medium underline underline-offset-4 decoration-white/30"
+              : "hover:text-white"
           }`}
         >
           <span className="text-base">{localeConfig[locale].flag}</span>
